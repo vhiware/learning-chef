@@ -20,6 +20,7 @@
 #
 
 include_recipe "mongodb"
+include_recipe "mongodb::mongo_gem"
 
 service "mongodb" do
   action [:disable, :stop]
@@ -43,4 +44,6 @@ mongodb_instance "mongos" do
   logpath      node['mongodb']['logpath']
   dbpath       node['mongodb']['dbpath']
   configserver configsrv
+  enable_rest  node['mongodb']['enable_rest']
+  smallfiles   node['mongodb']['smallfiles']
 end

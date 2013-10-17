@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: mongodb
-# Recipe:: replicatset
+# Recipe:: replicaset
 #
 # Copyright 2011, edelight GmbH
 #
@@ -18,14 +18,17 @@
 #
 
 include_recipe "mongodb"
+include_recipe "mongodb::mongo_gem"
 
 # if we are configuring a shard as a replicaset we do nothing in this recipe
-if !node.recipes.include?("mongodb::shard")
-  mongodb_instance "mongodb" do
+if !node.recipe?("mongodb::shard")
+  mongodb_instance node['mongodb']['instance_name'] do
     mongodb_type "mongod"
     port         node['mongodb']['port']
     logpath      node['mongodb']['logpath']
     dbpath       node['mongodb']['dbpath']
     replicaset   node
+    enable_rest  node['mongodb']['enable_rest']
+    smallfiles   node['mongodb']['smallfiles']
   end
 end
